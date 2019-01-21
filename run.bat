@@ -1,0 +1,2 @@
+setup
+python main.py
