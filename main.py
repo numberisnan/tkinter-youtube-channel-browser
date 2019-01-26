@@ -1,8 +1,8 @@
-from dialogues import searchQueryDialogue
+from ui import searchUI
 from ytrequests import youtubeSearchRequest
 from utils import readfile
 
-query = searchQueryDialogue()
+query = searchUI()
 
 apikey = readfile("apikey.key")
 

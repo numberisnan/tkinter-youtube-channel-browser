@@ -1,7 +1,7 @@
 import tkinter as tk
 
 # Search screen
-def searchQueryDialogue():
+def searchUI():
     "Show search query dialogue and return what was entered"
 
     root = tk.Tk()
@@ -20,3 +20,6 @@ def searchQueryDialogue():
 
     root.mainloop()
     return searchQuery.get()
+
+def searchResultsUI():
+    pass
