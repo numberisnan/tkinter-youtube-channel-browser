@@ -108,3 +108,6 @@ venv.bak/
 
 # API keys
 apikey.key
+
+# No internet testing files
+APIResponses/
