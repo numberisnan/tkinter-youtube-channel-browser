@@ -1,4 +1,4 @@
-from ui import searchUI
+from ui import searchUI, searchResultsUI
 from ytrequests import youtubeSearchRequest
 from utils import readfile
 
@@ -8,5 +8,5 @@ apikey = readfile("apikey.key")
 
 searchResults = youtubeSearchRequest(query, apikey=apikey, maxResults=3)
 
-#print(repr(searchResults))
+searchResultsUI(searchResults)
 

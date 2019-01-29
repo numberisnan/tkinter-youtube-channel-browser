@@ -3,9 +3,11 @@ import tkinter as tk
 # Search screen
 def searchUI():
     "Show search query dialogue and return what was entered"
+    width = 800
+    height = 600
 
     root = tk.Tk()
-    searchScreen = tk.Canvas(root, width = 800, height = 600, bg = 'red')
+    searchScreen = tk.Canvas(root, width =width, height =height, bg = 'red')
     searchScreen.pack()
 
     searchQuery = tk.StringVar()
@@ -21,5 +23,18 @@ def searchUI():
     root.mainloop()
     return searchQuery.get()
 
-def searchResultsUI():
-    pass
+def searchResultsUI(data={}):
+    width = 500
+    height = 600
+    resultsNumber = data["pageInfo"]["resultsPerPage"] #Get number of results
+    resultsHeight = height//resultsNumber
+    
+    root = tk.Tk()
+    window = tk.Canvas(root, width=width, height=height, bg='white')
+    window.pack()
+
+    for i in range(resultsNumber):
+        # Add corrosponding results
+        window.create_rectangle(0,i*resultsHeight,width,(i+1)*resultsHeight, fill='grey' if i % 2 == 0 else 'white')
+    
+    root.mainloop()
