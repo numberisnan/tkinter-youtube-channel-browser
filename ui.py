@@ -35,6 +35,6 @@ def searchResultsUI(data={}):
 
     for i in range(resultsNumber):
         # Add corrosponding results
-        window.create_rectangle(0,i*resultsHeight,width,(i+1)*resultsHeight, fill='grey' if i % 2 == 0 else 'white')
+        window.create_rectangle(0,i*resultsHeight,width,(i+1)*resultsHeight, fill='grey' if i % 2 == 0 else 'white') #Draw box
     
     root.mainloop()
