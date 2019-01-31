@@ -11,6 +11,8 @@ def searchUI():
     searchScreen = tk.Canvas(root, width =width, height =height, bg = 'red')
     searchScreen.pack()
 
+    root.title("Youtube Channel Search")
+
     searchQuery = tk.StringVar()
     font = ("Consolas", "30")
     smallFont = ("Consolas", "19")
@@ -34,6 +36,8 @@ def searchResultsUI(data={}):
     window = tk.Canvas(root, width=width, height=height, bg='white')
     window.pack()
 
+    root.title("Results for " + )
+
     for i in range(resultsNumber):
         item = data["items"][i]
 
@@ -42,5 +46,6 @@ def searchResultsUI(data={}):
 
         # Request image url
         url = item["snippet"]["thumbnails"]["default"]["url"]
+        ytrequests.downloadImage(url,"test.jpg")
     
     root.mainloop()
