@@ -1,6 +1,5 @@
 def readfile(location):
     "Reads a file and returns contents as string"
-    textFile = open(location, "r")
-    text = textFile.read()
-    textFile.close()
+    with open(location, "r") as f:
+        text = f.read()
     return text
