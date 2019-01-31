@@ -19,7 +19,7 @@ def downloadImage(url, imageName="untitled.jpg"):
     "Dowloads image, returns status code"
     response = requests.get(url)
     if response.status_code == 200:
-        with open("images/temp/" + imageName, 'wb') as f:
+        with open("images/_temp/" + imageName, 'wb') as f:
             f.write(response.content)
     
     return response.status_code
