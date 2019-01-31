@@ -1,12 +1,12 @@
-from ui import searchUI, searchResultsUI
-from ytrequests import youtubeSearchRequest
-from utils import readfile
+import ui
+import ytrequests
+import utils
 
-query = searchUI()
+query = ui.searchUI()
 
-apikey = readfile("apikey.key")
+apikey = utils.readfile("apikey.key")
 
-searchResults = youtubeSearchRequest(query, apikey=apikey, maxResults=3)
+searchResults = ytrequests.youtubeSearchRequest(query, apikey=apikey, maxResults=3)
 
-searchResultsUI(searchResults)
+ui.searchResultsUI(searchResults)
 

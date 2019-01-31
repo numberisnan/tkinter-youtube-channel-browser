@@ -1,4 +1,5 @@
 import tkinter as tk
+import ytrequests
 
 # Search screen
 def searchUI():
@@ -34,7 +35,12 @@ def searchResultsUI(data={}):
     window.pack()
 
     for i in range(resultsNumber):
+        item = data["items"][i]
+
         # Add corrosponding results
         window.create_rectangle(0,i*resultsHeight,width,(i+1)*resultsHeight, fill='grey' if i % 2 == 0 else 'white') #Draw box
+
+        # Request image url
+        url = item["snippet"]["thumbnails"]["default"]["url"]
     
     root.mainloop()
