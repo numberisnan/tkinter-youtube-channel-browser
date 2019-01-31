@@ -1,6 +1,6 @@
 import requests
 import json
-from utils import readfile
+import utils
 
 def youtubeSearchRequest(query, **kwargs):
     "Make youtube search request and return response"
@@ -11,6 +11,15 @@ def youtubeSearchRequest(query, **kwargs):
     try:
         response = requests.get(requestString).json()
     except:
-        response = json.loads(readfile("APIResponses/response_Ninja_.json")) #TODO Return actual error response
+        response = json.loads(utils.readfile("APIResponses/response_Ninja_.json")) #TODO Return actual error response
     
     return response
+
+def downloadImage(url, imageName="untitled.jpg"):
+    "Dowloads image, returns status code"
+    response = requests.get(url)
+    if response.status_code == 200:
+        with open("images/temp/" + imageName, 'wb') as f:
+            f.write(response.content)
+    
+    return response.status_code
