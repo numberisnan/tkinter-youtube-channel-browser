@@ -1,6 +1,5 @@
-import requests
-import json
-import utils
+import requests, json, utils, io
+from PIL import ImageTk, Image
 
 def youtubeSearchRequest(query, **kwargs):
     "Make youtube search request and return response"
@@ -15,11 +14,11 @@ def youtubeSearchRequest(query, **kwargs):
     
     return response
 
-def downloadImage(url, imageName="untitled.jpg"):
-    "Dowloads image, returns status code"
-    response = requests.get(url)
-    if response.status_code == 200:
-        with open("images/_temp/" + imageName, 'wb') as f:
-            f.write(response.content)
+def requestTkImage(url):
+    "Downloads image, returns tkinter.PhotoImage instance"
+    try:
+        response = requests.get(url)
+    except:
+        return requestTkImage("http://127.0.0.1:8887/response_Thumbnail_.jpg") #Try local source for testing if no internet TODO Add actual error handling
     
-    return response.status_code
+    return ImageTk.PhotoImage(image=Image.open(io.BytesIO(response.content)))
