@@ -1,6 +1,4 @@
-import ui
-import ytrequests
-import utils
+import ui, ytrequests, utils
 
 query = ui.searchUI()
 
