@@ -8,10 +8,9 @@ def searchUI():
     height = 600
 
     root = tk.Tk()
-    searchScreen = tk.Canvas(root, width =width, height =height, bg = 'red')
-    searchScreen.pack()
-
     root.title("Youtube Channel Search")
+    searchScreen = tk.Canvas(root, width = width, height = height, bg = 'red')
+    searchScreen.pack()
 
     searchQuery = tk.StringVar()
     font = ("Consolas", "30")
@@ -29,23 +28,34 @@ def searchUI():
 def searchResultsUI(data={}):
     width = 500
     height = 600
-    resultsNumber = data["pageInfo"]["resultsPerPage"] #Get number of results
-    resultsHeight = height//resultsNumber
+
+    resultsNumber = data["pageInfo"]["resultsPerPage"]
     
+    resultsHeight = height//resultsNumber
+    resultsWidth = width
+
     root = tk.Tk()
+    root.title("Results")
     window = tk.Canvas(root, width=width, height=height, bg='white')
     window.pack()
 
-    root.title("Results for " + )
+    for i in range(resultsNumber): # Generate search results
+        # Relative x and y for (0,0) in mini-box
+        y = i*resultsHeight
+        x = 0
 
-    for i in range(resultsNumber):
+        # Result variables
         item = data["items"][i]
+        thumburl = item["snippet"]["thumbnails"]["default"]["url"]
 
-        # Add corrosponding results
-        window.create_rectangle(0,i*resultsHeight,width,(i+1)*resultsHeight, fill='grey' if i % 2 == 0 else 'white') #Draw box
+        window.create_rectangle(x,y,x+resultsWidth,y+resultsHeight, fill='grey' if i % 2 == 0 else 'white') #Draw frome
 
-        # Request image url
-        url = item["snippet"]["thumbnails"]["default"]["url"]
-        ytrequests.downloadImage(url,"test.jpg")
+        # Request thumbnail
+        thumbnailImage = ytrequests.requestTkImage(thumburl)
+        
+        print(x, y)
+        print(thumburl)
+        window.create_image(x+resultsWidth/8, y+resultsHeight/2, image=thumbnailImage)
+    
     
     root.mainloop()
