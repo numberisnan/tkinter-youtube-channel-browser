@@ -34,6 +34,7 @@ def searchResultsUI(data={}):
     resultsHeight = height//resultsNumber
     resultsWidth = width
 
+    imagedata = []
     root = tk.Tk()
     root.title("Results")
     window = tk.Canvas(root, width=width, height=height, bg='white')
@@ -51,11 +52,11 @@ def searchResultsUI(data={}):
         window.create_rectangle(x,y,x+resultsWidth,y+resultsHeight, fill='grey' if i % 2 == 0 else 'white') #Draw frome
 
         # Request thumbnail
-        thumbnailImage = ytrequests.requestTkImage(thumburl)
+        imagedata.insert(i,ytrequests.requestTkImage(thumburl))
         
         print(x, y)
         print(thumburl)
-        window.create_image(x+resultsWidth/8, y+resultsHeight/2, image=thumbnailImage)
+        window.create_image(x+resultsWidth/8, y+resultsHeight/2, image=imagedata[i])
     
     
     root.mainloop()
