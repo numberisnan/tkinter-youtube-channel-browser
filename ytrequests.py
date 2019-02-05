@@ -21,4 +21,4 @@ def requestTkImage(url):
     except:
         return requestTkImage("http://127.0.0.1:8887/response_Thumbnail_.jpg") #Try local source for testing if no internet TODO Add actual error handling
     
-    return ImageTk.PhotoImage(image=Image.open(io.BytesIO(response.content)))
+    return ImageTk.PhotoImage(image=Image.open(io.BytesIO(response.content)).resize((150,150), Image.ANTIALIAS))

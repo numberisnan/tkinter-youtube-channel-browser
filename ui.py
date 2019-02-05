@@ -56,7 +56,7 @@ def searchResultsUI(data={}):
         
         print(x, y)
         print(thumburl)
-        window.create_image(x+resultsWidth/8, y+resultsHeight/2, image=imagedata[i])
+        window.create_image(x+resultsWidth/5.5, y+resultsHeight/2, image=imagedata[i])
     
     
     root.mainloop()
