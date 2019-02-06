@@ -28,6 +28,8 @@ def searchUI():
 def searchResultsUI(data={}):
     width = 500
     height = 600
+    font = ("Leelawadee", "23")
+    smallFont = ("Leelawadee", "12")
 
     resultsNumber = data["pageInfo"]["resultsPerPage"]
     
@@ -47,16 +49,21 @@ def searchResultsUI(data={}):
 
         # Result variables
         item = data["items"][i]
-        thumburl = item["snippet"]["thumbnails"]["default"]["url"]
+        snippet = item["snippet"]
+        thumburl = snippet["thumbnails"]["default"]["url"]
+        channelName = snippet["title"]
+        description = snippet["description"]
 
         window.create_rectangle(x,y,x+resultsWidth,y+resultsHeight, fill='grey' if i % 2 == 0 else 'white') #Draw frome
 
-        # Request thumbnail
-        imagedata.insert(i,ytrequests.requestTkImage(thumburl))
         
-        print(x, y)
-        print(thumburl)
-        window.create_image(x+resultsWidth/5.5, y+resultsHeight/2, image=imagedata[i])
+        imagedata.insert(i,ytrequests.requestTkImage(thumburl)) # Request thumbnail
+        
+        window.create_image(x+resultsWidth/5.5, y+resultsHeight/2, image=imagedata[i]) # Add image
+
+        window.create_text(x+resultsWidth/2.5,y+resultsHeight/5,text=channelName, font=font, anchor=tk.W, width=str(resultsWidth/2.5) + "p") # Write channel name
+
+        window.create_text(x+resultsWidth/2.5,y+resultsHeight/1.5,text=description.strip(), font=smallFont, anchor=tk.W, width=str(resultsWidth/2.5) + "p") # Write channel description
     
     
     root.mainloop()
