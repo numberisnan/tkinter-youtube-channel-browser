@@ -2,10 +2,12 @@ import tkinter as tk
 import ytrequests
 
 # Search screen
-def searchUI():
+def searchUI(**kwargs):
     "Show search query dialogue and return what was entered"
-    width = 800
-    height = 600
+    width = kwargs.get("width") or 800
+    height = kwargs.get("height") or 600
+    font = ("Consolas", "30")
+    smallFont = ("Consolas", "19")
 
     root = tk.Tk()
     root.title("Youtube Channel Search")
@@ -13,8 +15,6 @@ def searchUI():
     searchScreen.pack()
 
     searchQuery = tk.StringVar()
-    font = ("Consolas", "30")
-    smallFont = ("Consolas", "19")
 
     searchScreen.create_window(400, 400, window=tk.Entry(searchScreen,fg = "grey", textvariable = searchQuery, width=30, font=font, justify=tk.CENTER))
     youtubeImage = tk.PhotoImage(file="images/searchbox/youtubeicon.gif")
@@ -25,9 +25,9 @@ def searchUI():
     root.mainloop()
     return searchQuery.get()
 
-def searchResultsUI(data={}):
-    width = 500
-    height = 600
+def searchResultsUI(data={}, **kwargs):
+    width = kwargs.get('width') or 500
+    height = kwargs.get('height') or 600
     font = ("Leelawadee", "23")
     smallFont = ("Leelawadee", "12")
 
@@ -59,11 +59,27 @@ def searchResultsUI(data={}):
         
         imagedata.insert(i,ytrequests.requestTkImage(thumburl)) # Request thumbnail
         
-        window.create_image(x+resultsWidth/5.5, y+resultsHeight/2, image=imagedata[i]) # Add image
+        clickableImage = window.create_image(x+resultsWidth/5.5, y+resultsHeight/2, image=imagedata[i]) # Add image
+        window.tag_bind(clickableImage, "<ButtonPress-1>", print)
 
         window.create_text(x+resultsWidth/2.5,y+resultsHeight/5,text=channelName, font=font, anchor=tk.W, width=str(resultsWidth/2.5) + "p") # Write channel name
 
         window.create_text(x+resultsWidth/2.5,y+resultsHeight/1.5,text=description.strip(), font=smallFont, anchor=tk.W, width=str(resultsWidth/2.5) + "p") # Write channel description
-    
-    
+    helpUI()
     root.mainloop()
+    
+
+def helpUI(**kwargs):
+    width = kwargs.get('width') or 800
+    height = kwargs.get('height') or 100
+    font = ("Leelawadee", "23")
+
+    root = tk.Tk()
+    root.title("Help")
+    root.geometry("%dx%d+%d+%d" % (width, height, 0, 0))
+    window = tk.Canvas(root, width=width, height=height, bg='white')
+    window.pack()
+
+    window.create_text(width//2,height//2,text="To see details for each channel, click the thumbnail", font=font)
+
+    return root
