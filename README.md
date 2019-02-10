@@ -6,6 +6,7 @@ A tkinter youtube channel browser for a CS class
 - Python v3+ (with tkinter)
 - pip
 - Windows (Recommended)
+- A valid youtube.com API key (save in directory as apkey.key)
 
 ## Run
 
