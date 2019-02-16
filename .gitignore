@@ -111,3 +111,6 @@ apikey.key
 
 # No internet testing files
 APIResponses/
+
+# VSCode
+.vscode/
