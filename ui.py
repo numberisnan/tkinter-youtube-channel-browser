@@ -55,18 +55,19 @@ def detailsUI(channelID, **kwargs):
     topicDetails = channelData["topicDetails"]
     statistics = channelData["statistics"]
 
-    root = tk.Tk()
+    root = tk.Toplevel()
     root.title(snippet["title"])
-    window = tk.Canvas(root, width=width, height=height, bg='white')
+    window = tk.Canvas(root, width=width, height=height, bg='lightGrey')
     window.pack()
 
     imageURL = snippet["thumbnails"]["default"]["url"]
 
-    thumbnailImage = ytrequests.requestTkImage(imageURL, apikey=apikey)
+    thumbnailImage = ytrequests.requestTkImage(imageURL, width=300, height=100)
 
     image = window.create_image(width/2, 100, image=thumbnailImage)
+    
 
-    tk.mainloop()
+    root.mainloop()
 
 def searchResultsUI(data={}, **kwargs):
     "Show search results with thumbnails and descriptions"
