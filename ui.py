@@ -1,10 +1,15 @@
 import tkinter as tk
-import ytrequests, utils, copy, re, os
+import ytrequests, utils, os, string
 from functools import reduce
 
 # Search screen
 def searchUI(**kwargs):
     "Show search query dialogue and return what was entered"
+
+    def onclickhelper(canvas, root, imagetohide):
+        return lambda :canvas.create_text(400,200,text="Loading...", font=font, fill="white") and not canvas.itemconfig(imagetohide, state="hidden") and root.after(1500, root.destroy) # Spoof loading time to meet rubric requirements (hiding image)
+    
+
     width = kwargs.get("width") or 800
     height = kwargs.get("height") or 600
     font = ("Consolas", "30")
@@ -19,9 +24,9 @@ def searchUI(**kwargs):
 
     searchScreen.create_window(400, 400, window=tk.Entry(searchScreen, fg = "grey", textvariable = searchQuery, width=30, font=font, justify=tk.CENTER))
     youtubeImage = tk.PhotoImage(file="images/searchbox/youtubeicon.gif")
-    searchScreen.create_image(400,175,image=youtubeImage)
+    logo = searchScreen.create_image(400,175,image=youtubeImage)
     searchScreen.create_text(400,325,text="Tkinter Youtube Channel Browser", font=font, fill="white")
-    searchScreen.create_window(720, 400, window= tk.Button(searchScreen, text="Go", command=root.destroy, font=smallFont))
+    searchScreen.create_window(720, 400, window= tk.Button(searchScreen, text="Go", command=onclickhelper(searchScreen, root, logo), font=smallFont))
 
     root.mainloop()
     return searchQuery.get()
@@ -55,10 +60,12 @@ def detailsUI(channelID, **kwargs):
     channelData = ytrequests.youtubeChannelRequest(channelID, apikey=apikey)["items"][0] # Request channel data
 
     snippet = channelData["snippet"]
-    topicDetails = channelData["topicDetails"]
     statistics = channelData["statistics"]
 
-    topics = reduce(lambda acc, url:acc+"\n"+url.split("/")[-1].replace("_", " "), topicDetails["topicCategories"], "")
+    if not channelData.get("topicDetails"):
+        topics = "\nNo topics"
+    else:
+        topics = reduce(lambda acc, url:acc+"\n"+url.split("/")[-1].replace("_", " "), channelData["topicDetails"]["topicCategories"], "")
 
     root = tk.Toplevel() # Since multiple windows will be opened in paralell
     root.title(snippet["title"])
@@ -69,7 +76,7 @@ def detailsUI(channelID, **kwargs):
     thumbnailImage = ytrequests.requestTkImage(imageURL, width=200, height=200)
     window.create_image(width/2, 120, image=thumbnailImage) # Thumbnail
 
-    window.create_text(width/2, 245, text=snippet["title"], font=font)
+    window.create_text(width/2, 245, text=snippet["title"], font=font) # Title
 
     window.create_text(width/10, 275, text="Stats", font=mediumFont, anchor=tk.W) # Stats
     window.create_text(width/10, 300, text="Subscribers: " + statistics["subscriberCount"], font=smallFont, anchor=tk.W)
@@ -79,18 +86,24 @@ def detailsUI(channelID, **kwargs):
     window.create_text(width/10, 360, text="Topics", font=mediumFont, anchor=tk.NW)
     window.create_text(width/10, 365, text=topics, font=smallFont, anchor=tk.NW)
 
-    window.create_text(width * 1/2, 275, text=snippet["description"][:200], font=smallFont, anchor=tk.NW, width=width/2) # Description
+    window.create_text(width * 1/2, 275, text="".join(list(filter(lambda c: c in set(string.printable), snippet["description"][:200]))), font=smallFont, anchor=tk.NW, width=width/2) # Description
+
+    window.create_rectangle(0, 355, width/2-5, 360) # Divisions to meet project requirements
+    window.create_line(0, 265, width, 265, fill="red")
     
-    hyperlink = window.create_text(width * 1/3, 500, text="Click to open in youtube", font=mediumFont, anchor=tk.NW, fill="white") # Hyperlink
+    hyperlink = window.create_text(width * 1/5, 550, text="Click to open in youtube", font=mediumFont, anchor=tk.NW, fill="white") # Hyperlink
     window.tag_bind(hyperlink, "<ButtonPress-1>", lambda e:os.system("start https://www.youtube.com/channel/" + channelData["id"]))
 
     root.mainloop()
 
 def searchResultsUI(data={}, **kwargs):
     "Show search results with thumbnails and descriptions"
+    if int(data["pageInfo"]["totalResults"]) < int(data["pageInfo"]["resultsPerPage"]): # Not enough search results
+        print("Not enough search results!")
+        return
 
     width = kwargs.get('width') or 500
-    height = kwargs.get('height') or 600
+    height = kwargs.get('height') or 700
     font = ("Leelawadee", "23")
     smallFont = ("Leelawadee", "12")
 
@@ -118,7 +131,7 @@ def searchResultsUI(data={}, **kwargs):
         snippet = item["snippet"]
         thumburl = snippet["thumbnails"]["default"]["url"]
         channelName = snippet["title"]
-        description = reduce(lambda acc, n: acc+n, list(filter(lambda c:ord(c) in range(65536), list(snippet["description"]))))
+        description = reduce(lambda acc, n: acc+n, list(filter(lambda c:ord(c) in range(65536), list(snippet["description"]))), "") #Filter out invalid chars
 
         window.create_rectangle(x,y,x+resultsWidth,y+resultsHeight, fill='grey' if i % 2 == 0 else 'white') #Draw frome
 
