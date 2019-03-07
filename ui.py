@@ -6,7 +6,7 @@ from functools import reduce
 def searchUI(**kwargs):
     "Show search query dialogue and return what was entered"
 
-    def onclickhelper(canvas, root, imagetohide):
+    def onclickhelper(canvas, root, imagetohide): #Helper function for wierd scoping rules
         return lambda :canvas.create_text(400,200,text="Loading...", font=font, fill="white") and not canvas.itemconfig(imagetohide, state="hidden") and root.after(1500, root.destroy) # Spoof loading time to meet rubric requirements (hiding image)
     
 

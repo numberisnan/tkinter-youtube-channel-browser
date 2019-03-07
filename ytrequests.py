@@ -11,7 +11,7 @@ def youtubeSearchRequest(query, **kwargs):
     try:
         response = requests.get(requestString).json()
     except:
-        response = json.loads(utils.readfile("APIResponses/response_Ninja_.json")) #TODO Return actual error response
+        response = json.loads(utils.readfile("APIResponses/response_Ninja_.json")) #Return test file if there is no internet
     
     return response
 
@@ -23,9 +23,9 @@ def requestTkImage(url, **kwargs):
     try:
         response = requests.get(url)
     except:
-        return requestTkImage("http://127.0.0.1:8887/response_Thumbnail_.jpg", width=width, height=height) #Try local source for testing if no internet TODO Add actual error handling
+        return requestTkImage("http://127.0.0.1:8887/response_Thumbnail_.jpg", width=width, height=height) #Try local source for testing if no internet
     
-    return ImageTk.PhotoImage(image=Image.open(io.BytesIO(response.content)).resize((width,height), Image.ANTIALIAS))
+    return ImageTk.PhotoImage(image=Image.open(io.BytesIO(response.content)).resize((width,height), Image.ANTIALIAS)) # Resize image and return Tk.PhotoImage instance
 
 def youtubeChannelRequest(channelID, **kwargs):
     "Make youtube channel detail request and return response"
@@ -36,6 +36,6 @@ def youtubeChannelRequest(channelID, **kwargs):
     try:
         response = requests.get(requestString).json()
     except:
-        response = json.loads(utils.readfile("APIResponses/response_MrBeast_Channel.json")) #TODO Return actual error response
+        response = json.loads(utils.readfile("APIResponses/response_MrBeast_Channel.json")) #Return test file if there is no internet
     
     return response
